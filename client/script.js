@@ -188,19 +188,42 @@ document.querySelector('#query-button').addEventListener('click', newFunction)
 */
 
 // CODE HERE 
+// function createFood(e){
+//     e.preventDefault()
+//     let foodInput = document.querySelector('input')
+//     const body = {
+//         newFood: foodInput.value
+//     }
+//     axios.post(`http://localhost:3000/food`, body).then((res) => {
+//         for(let i = 0; i < res.data.length; i++){
+//             let text = document.createElement('p')
+//             text.textContent = res.data[i]
+//             inputFood = document.querySelector('section').appendChild(text)
+//         }
+//     })
+// }
+
+// document.querySelector('#food-button').addEventListener('click', createFood)
+
+
+
 function createFood(e){
     e.preventDefault()
-    let foodInput = document.querySelector('input')
+    let list = document.querySelector('ol')
+    let foodInput = document.getElementById("foodInput")
+
+    list.innerHTML = ''
+
     const body = {
         newFood: foodInput.value
     }
-    axios.post(`http://localhost:3000/food`, body).then((res) => {
-        for(let i = 0; i < res.data.length; i++){
-            let text = document.createElement('p')
-            text.textContent = res.data[i]
-            inputFood = document.querySelector('section').appendChild(text)
-        }
-    })
+    axios.post('http://localhost:3000/food', body).then((res) => {
+        res.data.forEach((item) => {
+            let element = document.createElement('li')
+            element.textContent = item
+            list.appendChild(element)
+        });
+    }).catch((err) => console.log(err))
 }
 
-document.querySelector('#food-button').addEventListener('click', createFood)
+document.querySelector('#food-form').addEventListener('submit', createFood)
